@@ -3,18 +3,19 @@ package DeviceMng.devicemng.DTO;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+// sua ten returnAt
 public class DeviceAssignmentDTO {
     private UUID iduser;
     private UUID iddevice;
     private LocalDateTime createdAt;  // Thời gian mượn
-    private LocalDateTime returnAt;
+    private LocalDateTime confirmAt;
     private String status;
 
-    public DeviceAssignmentDTO(UUID iduser, UUID iddevice, LocalDateTime createdAt, LocalDateTime returnAt, String status) {
+    public DeviceAssignmentDTO(UUID iduser, UUID iddevice, LocalDateTime createdAt, LocalDateTime confirmAt, String status) {
         this.iduser = iduser;
         this.iddevice = iddevice;
         this.createdAt = createdAt;
-        this.returnAt = returnAt;
+        this.confirmAt = confirmAt;
         this.status = status;
     }
 
@@ -42,12 +43,12 @@ public class DeviceAssignmentDTO {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getReturnAt() {
-        return returnAt;
+    public LocalDateTime getConfirmAt() {
+        return confirmAt;
     }
 
-    public void setReturnAt(LocalDateTime returnAt) {
-        this.returnAt = returnAt;
+    public void setConfirmAt(LocalDateTime confirmAt) {
+        this.confirmAt = confirmAt;
     }
 
     public String getStatus() {
@@ -58,3 +59,5 @@ public class DeviceAssignmentDTO {
         this.status = status;
     }
 }
+
+

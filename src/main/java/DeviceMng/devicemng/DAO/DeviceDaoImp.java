@@ -23,7 +23,7 @@ public class DeviceDaoImp implements DeviceDao {
                 device.getName(),
                 device.getDescription(),
                 device.getStatus(),
-                device.getCreated_at()
+                device.getCreatedAt()
         );
     }
 
@@ -52,8 +52,8 @@ public class DeviceDaoImp implements DeviceDao {
             deviceDTO.setCreatedAt(LocalDateTime.now());
         }
 
-        Device device1 = deviceRepository.save(device);
-        return convertDeviceDTO(device1);
+        Device saveDevice = deviceRepository.save(device);
+        return convertDeviceDTO(saveDevice);
     }
 
     @Override
@@ -62,15 +62,21 @@ public class DeviceDaoImp implements DeviceDao {
     }
 
     @Override
-    public List<DeviceDTO> findAll() {
-        return deviceRepository.findAll().stream().map(u -> convertDeviceDTO(u)).collect(Collectors.toList());
+    public List<DeviceDTO> findAll(String searchText) {
+        if (searchText == null || searchText.trim().isEmpty()) {
+            return deviceRepository.findAll().stream()
+                    .map(this::convertDeviceDTO)
+                    .collect(Collectors.toList());
+        }
+
+        return deviceRepository.searchByName(searchText).stream()
+                .map(this::convertDeviceDTO)
+                .collect(Collectors.toList());
     }
 
+    //VietNTb: Valudate dua len tang sevice
     @Override
     public void deleteById(UUID id) {
-        // lay thong tin device can xoa
-        deviceRepository.findById(id).
-                orElseThrow(() -> new RuntimeException("Device not found"));
         deviceRepository.deleteById(id);
     }
 }

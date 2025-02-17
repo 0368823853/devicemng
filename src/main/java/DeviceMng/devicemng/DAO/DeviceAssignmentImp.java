@@ -1,11 +1,7 @@
 package DeviceMng.devicemng.DAO;
 
 import DeviceMng.devicemng.DTO.DeviceAssignmentDTO;
-import DeviceMng.devicemng.Entity.Device;
 import DeviceMng.devicemng.Entity.DeviceAssignments;
-import DeviceMng.devicemng.Entity.Users;
-import DeviceMng.devicemng.Exception.DeviceNotFoundException;
-import DeviceMng.devicemng.Exception.UserNotFoundException;
 import DeviceMng.devicemng.Repository.DeviceAssignmentRepository;
 import DeviceMng.devicemng.Repository.DeviceRepository;
 import DeviceMng.devicemng.Repository.UserRepository;
@@ -35,35 +31,31 @@ public class DeviceAssignmentImp implements DeviceAssignmentDao{
         return new DeviceAssignmentDTO(
                 device.getUserId(),
                 device.getDeviceId(),
-                device.getCreated_at(),
-                device.getReturnedAt(),
+                device.getCreatedAt(),
+                device.getConfirmAt(),
                 device.getStatus()
         );
     }
 
+//    @Override
+//    public List<DeviceAssignments> findByUserId(UUID userId) {
+//        return deviceAssignmentRepository.findByUserId(userId);
+//    }
+
+    //VietNTb: CHuyeen het validate snag service
     @Override
     public void assignDeviceToUser(UUID deviceId, UUID userId) {
-        Users user = userRepository.findById(userId).orElseThrow(()->new UserNotFoundException("User Not Found with id: "+ userId));
-        Device device = deviceRepository.findById(deviceId).orElseThrow(()->new DeviceNotFoundException("Device Not Found with id: "+ deviceId));
-
-        Optional<DeviceAssignments> existingAssignment = deviceAssignmentRepository
-                .findByDeviceIdAndUserIdAndReturnedAtIsNull(deviceId, userId);
-
-        if (existingAssignment.isPresent()) {
-            throw new IllegalStateException("User đã mượn thiết bị này, không thể mượn lại!");
-        }
-
         DeviceAssignments deviceAssignments = new DeviceAssignments();
-        deviceAssignments.setDeviceId(device.getId());
-        deviceAssignments.setUserId(user.getId());
-        deviceAssignments.setCreated_at(LocalDateTime.now());
+        deviceAssignments.setDeviceId(deviceId);
+        deviceAssignments.setUserId(userId);
+        deviceAssignments.setCreatedAt(LocalDateTime.now());
         deviceAssignments.setStatus("Borrowed");
         deviceAssignmentRepository.save(deviceAssignments);
     }
 
     @Override
     public List<DeviceAssignmentDTO> getUserDevices(UUID userId) {
-        List<DeviceAssignments> assignments = deviceAssignmentRepository.findByUserIdAndReturnedAtIsNull(userId);
+        List<DeviceAssignments> assignments = deviceAssignmentRepository.findByUserIdAndConfirmAtIsNull(userId);
         return assignments.stream()
                 .map(this::deviceAssignmentDTO)
                 .collect(Collectors.toList());
@@ -71,21 +63,24 @@ public class DeviceAssignmentImp implements DeviceAssignmentDao{
 
     @Override
     public void returnDevice(UUID assignmentId) {
-        DeviceAssignments assignments = deviceAssignmentRepository.findByIdAndReturnedAtIsNull(assignmentId)
-                .orElseThrow(()->new DeviceNotFoundException("Assignment Not Found with id: "+assignmentId));
-        assignments.setReturnedAt(LocalDateTime.now());
+        DeviceAssignments assignments = deviceAssignmentRepository.findByIdAndConfirmAtIsNull(assignmentId).orElse(null);
+        assignments.setConfirmAt(LocalDateTime.now());
         assignments.setStatus("Returned");
         deviceAssignmentRepository.save(assignments);
     }
 
+    //VietNTb: CHuyeen het validate snag service, xac nhan xong se xoa devicassignment
     @Override
     public void confirmDeviceReturn(UUID assignmentId) {
-        DeviceAssignments assignments = deviceAssignmentRepository.findById(assignmentId).orElseThrow(()->new DeviceNotFoundException("Assignment Not Found with id: "+assignmentId));
-        if (assignments.getReturnedAt() == null) {
-            throw new IllegalArgumentException("Assignment Not Found with id: "+assignmentId);
-        }
+        DeviceAssignments assignments = deviceAssignmentRepository.findById(assignmentId).orElse(null);
         assignments.setStatus("Confirmed");
         deviceAssignmentRepository.save(assignments);
+        //deviceAssignmentRepository.delete(assignments);
+    }
+
+    @Override
+    public Optional<DeviceAssignments> findByDeviceIdAndUserId(UUID deviceId, UUID userId) {
+        return deviceAssignmentRepository.findByDeviceIdAndUserId(deviceId, userId);
     }
 
     @Override
@@ -94,7 +89,7 @@ public class DeviceAssignmentImp implements DeviceAssignmentDao{
     }
 
     @Override
-    public List<DeviceAssignmentDTO> findAll() {
+    public List<DeviceAssignmentDTO> findAll(String searchText) {
         return List.of();
     }
 

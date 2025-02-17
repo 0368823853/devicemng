@@ -8,9 +8,9 @@ import java.util.UUID;
 
 @Service
 public interface DeviceService extends BaseService<DeviceDTO, UUID> {
-    List<DeviceDTO> searchByName(String name);
+    //List<DeviceDTO> searchByName(String name);
     List<DeviceDTO> filterByStatus(String status);
     DeviceDTO save(DeviceDTO deviceDTO);
     DeviceDTO update(DeviceDTO entity, UUID id);
-    boolean existsByName(String name);
+    //boolean existsByName(String name);
 }

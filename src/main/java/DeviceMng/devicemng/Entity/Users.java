@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+// sua ten
 @Entity
 @Table(name = "tbluser")
 public class Users {
@@ -30,19 +31,19 @@ public class Users {
     private String email;
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime created_at = LocalDateTime.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     public Users() {
     }
 
-    public Users(UUID id, String username, String password, String role, String fullname, String email, LocalDateTime created_at) {
+    public Users(UUID id, String username, String password, String role, String fullname, String email, LocalDateTime createdAt) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.role = role;
         this.fullname = fullname;
         this.email = email;
-        this.created_at = created_at;
+        this.createdAt = createdAt;
     }
 
     public UUID getId() {
@@ -93,11 +94,11 @@ public class Users {
         this.email = email;
     }
 
-    public LocalDateTime getCreated_at() {
-        return created_at;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCareated_at(LocalDateTime created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

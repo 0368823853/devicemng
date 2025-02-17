@@ -3,10 +3,10 @@ package DeviceMng.devicemng.Entity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+// sua ten
 @Entity
 @Table(name = "tbldevice_assignments")
 public class DeviceAssignments {
@@ -23,10 +23,10 @@ public class DeviceAssignments {
     private UUID deviceId;
 
     @Column(name = "created_at")
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @Column(name = "return_at")
-    private LocalDateTime returnedAt;
+    private LocalDateTime confirmAt;
 
     @Column(name = "status")
     private String status;
@@ -34,12 +34,12 @@ public class DeviceAssignments {
     public DeviceAssignments() {
     }
 
-    public DeviceAssignments(UUID id, UUID userId, UUID deviceId, LocalDateTime created_at, LocalDateTime returnedAt, String status) {
+    public DeviceAssignments(UUID id, UUID userId, UUID deviceId, LocalDateTime createdAt, LocalDateTime confirmAt, String status) {
         this.id = id;
         this.userId = userId;
         this.deviceId = deviceId;
-        this.created_at = created_at;
-        this.returnedAt = returnedAt;
+        this.createdAt = createdAt;
+        this.confirmAt = confirmAt;
         this.status = status;
     }
 
@@ -67,20 +67,20 @@ public class DeviceAssignments {
         this.deviceId = deviceId;
     }
 
-    public LocalDateTime getCreated_at() {
-        return created_at;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(LocalDateTime created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public LocalDateTime getReturnedAt() {
-        return returnedAt;
+    public LocalDateTime getConfirmAt() {
+        return confirmAt;
     }
 
-    public void setReturnedAt(LocalDateTime returnedAt) {
-        this.returnedAt = returnedAt;
+    public void setConfirmAt(LocalDateTime confirmAt) {
+        this.confirmAt = confirmAt;
     }
 
     public String getStatus() {

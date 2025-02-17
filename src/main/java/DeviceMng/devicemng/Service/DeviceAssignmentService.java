@@ -12,4 +12,5 @@ public interface DeviceAssignmentService extends BaseService<DeviceAssignmentDTO
     List<DeviceAssignmentDTO> getUserDevices(UUID userId); // User xem danh sách thiết bị của mình
     void returnDevice(UUID assignmentId); // User trả thiết bị
     void confirmDeviceReturn(UUID assignmentId);
+
 }

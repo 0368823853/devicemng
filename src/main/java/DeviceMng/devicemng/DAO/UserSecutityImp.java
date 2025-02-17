@@ -17,6 +17,7 @@ public class UserSecutityImp implements UserDetails {
         this.users = users;
     }
 
+    // giai thich tai sao ben controller khoong can role_ van phan quyen duoc
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // mặc định Spring yêu cầu role phải có tiền tố "ROLE_".

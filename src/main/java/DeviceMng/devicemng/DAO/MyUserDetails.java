@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MyUserDetails implements UserDetailsService {
 
+    // tao ham dao rieng
     @Autowired
     private UserRepository userRepository;
 

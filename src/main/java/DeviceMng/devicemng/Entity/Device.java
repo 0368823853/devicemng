@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
+// sua ten
 @Entity
 @Table(name = "tbldevice")
 public class Device {
@@ -26,17 +27,17 @@ public class Device {
     private String status;
 
     @Column(name = "created_at")
-    private LocalDateTime created_at = LocalDateTime.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     public Device() {
     }
 
-    public Device(UUID id, String name, String description, String status, LocalDateTime created_at) {
+    public Device(UUID id, String name, String description, String status, LocalDateTime createdAt) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.status = status;
-        this.created_at = created_at;
+        this.createdAt = createdAt;
     }
 
     public UUID getId() {
@@ -71,11 +72,11 @@ public class Device {
         this.status = status;
     }
 
-    public LocalDateTime getCreated_at() {
-        return created_at;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(LocalDateTime created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

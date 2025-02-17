@@ -2,17 +2,14 @@ package DeviceMng.devicemng.DAO;
 
 import DeviceMng.devicemng.DTO.UpdatePasswordDTO;
 import DeviceMng.devicemng.DTO.UserDTO;
+import DeviceMng.devicemng.DTO.UserRegisterDTO;
 import DeviceMng.devicemng.Entity.Users;
 import DeviceMng.devicemng.Repository.UserRepository;
-import DeviceMng.devicemng.Service.LoginTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -24,12 +21,6 @@ public class UserDaoImp implements UserDao {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private LoginTokenService loginTokenService;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
 
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(10);
 
@@ -39,7 +30,7 @@ public class UserDaoImp implements UserDao {
                 user.getFullname(),
                 user.getEmail(),
                 user.getRole(),
-                user.getCreated_at()
+                user.getCreatedAt()
         );
     }
 
@@ -54,54 +45,59 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    public Optional<UserDTO> findById(UUID id) {
-        return userRepository.findById(id).map(u -> convertUserToDTO(u));
-    }
-
-    @Override
-    public List<UserDTO> findAll() {
-        return userRepository.findAll().stream().map(u -> convertUserToDTO(u)).collect(Collectors.toList());
-    }
-
-    @Override
-    public UserDTO save(UserDTO userDTO) {
+    public UserDTO register(UserRegisterDTO userRegisterDTO) {
         Users user = new Users();
-        user.setUsername(userDTO.getUsername());
-        user.setFullname(userDTO.getFullname());
-        user.setEmail(userDTO.getEmail());
-        user.setRole(userDTO.getRole());
-        user.setCareated_at(LocalDate.now().atStartOfDay());
+        user.setUsername(userRegisterDTO.getUsername());
+        user.setPassword(bCryptPasswordEncoder.encode(userRegisterDTO.getPassword()));
+        user.setFullname(userRegisterDTO.getFullname());
+        user.setEmail(userRegisterDTO.getEmail());
+        // Nếu role bị null, tự động đặt "USER"
+        if (user.getRole() == null) {
+            user.setRole("USER");
+        }
+        user.setCreatedAt(LocalDateTime.now());
 
         Users savedUser = userRepository.save(user);
         return convertUserToDTO(savedUser);
     }
 
     @Override
-    public void deleteById(UUID id) {
-        // Lấy thông tin user cần xóa
-        Users userToDelete = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Người dùng không tồn tại"));
-
-        // Nếu user cần xóa là Admin => Không cho xóa
-        if (userToDelete.getRole().equals("ADMIN")) {
-            throw new RuntimeException("Không thể xóa người dùng có quyền ADMIN");
-        }
-
-        userRepository.deleteById(id);
+    public Optional<UserDTO> findById(UUID id) {
+        return userRepository.findById(id).map(u -> convertUserToDTO(u));
     }
 
     @Override
+    public List<UserDTO> findAll(String searchText) {
+        if (searchText == null || searchText.trim().isEmpty()) {
+            return userRepository.findAll().stream()
+                    .map(this::convertUserToDTO)
+                    .collect(Collectors.toList());
+        }
+
+        return userRepository.searchByFullnameOrEmail(searchText).stream()
+                .map(this::convertUserToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public UserDTO save(UserDTO entity) {
+        return null;
+    }
+
+    // chuyen valideta sang service
+    @Override
+    public void deleteById(UUID id) {
+        userRepository.deleteById(id);
+    }
+
+
+    // validate sang service, bo cac dieu kien
+    @Override
     public void updateUser(UUID id, UserDTO userDTO) {
-        Users user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User Not Found"));
-        if (userDTO.getUsername() != null) {
-            user.setUsername(userDTO.getUsername());
-        }
-        if (userDTO.getFullname() != null) {
-            user.setFullname(userDTO.getFullname());
-        }
-        if (userDTO.getEmail() != null) {
-            user.setEmail(userDTO.getEmail());
-        }
+        Users user = userRepository.findById(id).orElse(null);
+        user.setUsername(userDTO.getUsername());
+        user.setFullname(userDTO.getFullname());
+        user.setEmail(userDTO.getEmail());
         userRepository.save(user);
     }
 
@@ -120,59 +116,20 @@ public class UserDaoImp implements UserDao {
         return userRepository.existsByEmail(email);
     }
 
-    @Override
-    public Users register(Users users) {
-        // Kiểm tra xem username đã tồn tại chưa
-        if (userRepository.existsByUsername(users.getUsername())) {
-            throw new RuntimeException("Username đã tồn tại!");
-        }
+    // dua loginn ve service
 
-        // Kiểm tra xem email đã tồn tại chưa
-        if (userRepository.existsByEmail(users.getEmail())) {
-            throw new RuntimeException("Email đã tồn tại!");
-        }
-
-        // Mã hóa mật khẩu trước khi lưu
-        users.setPassword(bCryptPasswordEncoder.encode(users.getPassword()));
-
-        // Nếu role bị null, tự động đặt "USER"
-        if (users.getRole() == null) {
-            users.setRole("USER");
-        }
-        return userRepository.save(users);
-    }
-
-    @Override
-    public String login(Users users) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(users.getUsername(), users.getPassword()));
-        if (authentication.isAuthenticated()) {
-            return loginTokenService.createLoginToken(users.getUsername());
-        }
-        return "Faile";
-    }
-
-    @Override
-    public void deleteUser(UUID id) {
-        userRepository.deleteById(id);
-    }
-
+    //VietNTb: chuyen admin user thanh hang so de dung chung, chuyen validate ve service
     @Override
     public void updateUserRole(UUID id, String role) {
-        Users user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User Not Found"));
+        Users user = userRepository.findById(id).orElse(null);
         user.setRole(role);
-
-        if(!role.equals("ADMIN") && !role.equals("USER")) {
-            throw new RuntimeException("Role khong hop le");
-        }
         userRepository.save(user);
     }
 
+    //VietntB; CHUYEN VALISATE VE service
     @Override
     public void updatePassword(String username, UpdatePasswordDTO updatePasswordDTO) {
         Users user = userRepository.findByUsername(username).orElse(null);
-        if (!bCryptPasswordEncoder.matches(updatePasswordDTO.getOldPassword(), user.getPassword())) {
-            throw new RuntimeException("Mat khau cu khong dung");
-        }
         user.setPassword(bCryptPasswordEncoder.encode(updatePasswordDTO.getNewPassword()));
         userRepository.save(user);
     }

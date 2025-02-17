@@ -17,6 +17,9 @@ public class UserDTO {
         this.createdAt = createdAt;
     }
 
+    public UserDTO() {
+    }
+
     public String getUsername() {
         return username;
     }
