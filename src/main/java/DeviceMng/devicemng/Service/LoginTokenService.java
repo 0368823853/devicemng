@@ -25,8 +25,9 @@ public class LoginTokenService {
             this.secretKey = Base64.getEncoder().encodeToString(key.getEncoded());
     }
 
-    public String createLoginToken(String username) {
+    public String createLoginToken(String username, String role) {
         Map<String, Object> data = new HashMap<>();
+        data.put("role", role);
         return Jwts.builder()      // khoi tao jwt
                 .claims()           // tao payload cho token
                 .add(data)           // them cac thong tin payload

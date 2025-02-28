@@ -43,8 +43,7 @@ public class UserServiceImp implements UserService {
     // TODO: neu khong co gi thi tra ve mang rong
     @Override
     public List<UserDTO> filterByRole(String role) {
-        List<UserDTO> users = userDao.findByRole(role);
-        return users.isEmpty() ? Collections.emptyList() : users;
+        return userDao.findByRole(role);
     }
 
     @Override
@@ -133,13 +132,21 @@ public class UserServiceImp implements UserService {
             throw new IllegalArgumentException("Please input password");
         }
 
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(users.getUsername(), users.getPassword()));
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(users.getUsername(), users.getPassword())
+        );
+
         if (authentication.isAuthenticated()) {
-            return loginTokenService.createLoginToken(users.getUsername());
+            // Lấy role của user từ Authentication
+            String role = authentication.getAuthorities().iterator().next().getAuthority();
+
+            // truyền role vào token
+            return loginTokenService.createLoginToken(users.getUsername(), role);
         }
 
         return "False";
     }
+
 
     @Override
     public void deleteUser(UUID id) {

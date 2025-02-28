@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 public class DeviceController {
 
@@ -17,7 +18,7 @@ public class DeviceController {
     private DeviceService deviceService;
 
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/loaddevice")
+    @GetMapping("/devices")
     public ResponseEntity<List<DeviceDTO>> getAllDevices(@RequestParam(required = false) String searchText) {
         List<DeviceDTO> deviceDTO = deviceService.getAll(searchText);
         return ResponseEntity.ok(deviceDTO);
