@@ -1,6 +1,7 @@
 package DeviceMng.devicemng.Service;
 
 import DeviceMng.devicemng.DTO.DeviceDTO;
+import DeviceMng.devicemng.DTO.UserDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +12,6 @@ public interface DeviceService extends BaseService<DeviceDTO, UUID> {
     //List<DeviceDTO> searchByName(String name);
     List<DeviceDTO> filterByStatus(String status);
     DeviceDTO save(DeviceDTO deviceDTO);
-    DeviceDTO update(DeviceDTO entity, UUID id);
+    void updateDevice(UUID id, DeviceDTO deviceDTO);
     //boolean existsByName(String name);
 }

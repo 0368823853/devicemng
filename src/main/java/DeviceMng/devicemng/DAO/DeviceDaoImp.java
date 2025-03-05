@@ -20,6 +20,7 @@ public class DeviceDaoImp implements DeviceDao {
 
     private DeviceDTO convertDeviceDTO(Device device) {
         return new DeviceDTO(
+                device.getId(),
                 device.getName(),
                 device.getDescription(),
                 device.getStatus(),
@@ -54,6 +55,15 @@ public class DeviceDaoImp implements DeviceDao {
 
         Device saveDevice = deviceRepository.save(device);
         return convertDeviceDTO(saveDevice);
+    }
+
+    @Override
+    public void updateDevice(UUID id, DeviceDTO deviceDTO) {
+        Device device = deviceRepository.findById(id).orElse(null);
+        device.setName(deviceDTO.getName());
+        device.setDescription(deviceDTO.getDescription());
+        device.setStatus(deviceDTO.getStatus());
+        deviceRepository.save(device);
     }
 
     @Override

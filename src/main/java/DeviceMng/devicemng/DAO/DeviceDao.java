@@ -9,4 +9,7 @@ public interface DeviceDao extends Dao<DeviceDTO, UUID> {
     List<DeviceDTO> findByStatus(String status);
     List<DeviceDTO> findByNameDevice(String name);
     boolean existsByname(String name);
-    DeviceDTO save(DeviceDTO deviceDTO);}
+    DeviceDTO save(DeviceDTO deviceDTO);
+    void updateDevice(UUID id, DeviceDTO deviceDTO);
+}
+
