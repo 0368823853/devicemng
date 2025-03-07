@@ -35,6 +35,7 @@ public class DeviceController {
     }
 
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update/{id}")
     public ResponseEntity<Map<String, String>> updateDevice(@PathVariable UUID id, @RequestBody DeviceDTO deviceDTO) {
         deviceService.updateDevice(id, deviceDTO);

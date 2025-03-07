@@ -22,7 +22,7 @@ public class Users {
     private String password;
 
     @Column(name = "role")
-    private String role = "USER"; // ✅ Đặt mặc định là "USER"
+    private String role; // ✅ Đặt mặc định là "USER"
 
     @Column(name = "fullname")
     private String fullname;

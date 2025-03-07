@@ -1,7 +1,9 @@
 package DeviceMng.devicemng.DAO;
 
 import DeviceMng.devicemng.DTO.DeviceAssignmentDTO;
+import DeviceMng.devicemng.Entity.Device;
 import DeviceMng.devicemng.Entity.DeviceAssignments;
+import DeviceMng.devicemng.Entity.Users;
 import DeviceMng.devicemng.Repository.DeviceAssignmentRepository;
 import DeviceMng.devicemng.Repository.DeviceRepository;
 import DeviceMng.devicemng.Repository.UserRepository;
@@ -29,8 +31,11 @@ public class DeviceAssignmentImp implements DeviceAssignmentDao{
 
     private DeviceAssignmentDTO deviceAssignmentDTO(DeviceAssignments device) {
         return new DeviceAssignmentDTO(
+                device.getId(),
                 device.getUserId(),
                 device.getDeviceId(),
+                device.getDeviceName(),
+                device.getDeviceStatus(),
                 device.getCreatedAt(),
                 device.getConfirmAt(),
                 device.getStatus()
@@ -45,21 +50,34 @@ public class DeviceAssignmentImp implements DeviceAssignmentDao{
     //VietNTb: CHuyeen het validate snag service
     @Override
     public void assignDeviceToUser(UUID deviceId, UUID userId) {
+        Device device = deviceRepository.findById(deviceId).orElse(null);
+
         DeviceAssignments deviceAssignments = new DeviceAssignments();
         deviceAssignments.setDeviceId(deviceId);
         deviceAssignments.setUserId(userId);
+        deviceAssignments.setDeviceName(device.getName());
+        deviceAssignments.setDeviceStatus(device.getStatus());
         deviceAssignments.setCreatedAt(LocalDateTime.now());
         deviceAssignments.setStatus("Borrowed");
         deviceAssignmentRepository.save(deviceAssignments);
     }
 
-    @Override
-    public List<DeviceAssignmentDTO> getUserDevices(UUID userId) {
-        List<DeviceAssignments> assignments = deviceAssignmentRepository.findByUserIdAndConfirmAtIsNull(userId);
-        return assignments.stream()
-                .map(this::deviceAssignmentDTO)
-                .collect(Collectors.toList());
+//    @Override
+//    public List<DeviceAssignmentDTO> getUserDevices(String username) {
+//        List<DeviceAssignments> assignments = deviceAssignmentRepository.findByUserIdAndConfirmAtIsNull(username);
+//        return assignments.stream()
+//                .map(this::deviceAssignmentDTO)
+//                .collect(Collectors.toList());
+//    }
+    public List<DeviceAssignmentDTO> getUserDevices(String username) {
+        Users user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<DeviceAssignments> assignments = deviceAssignmentRepository.findByUserId(user.getId());
+
+        return assignments.stream().map(this::deviceAssignmentDTO).collect(Collectors.toList());
     }
+
 
     @Override
     public void returnDevice(UUID assignmentId) {
@@ -75,7 +93,7 @@ public class DeviceAssignmentImp implements DeviceAssignmentDao{
         DeviceAssignments assignments = deviceAssignmentRepository.findById(assignmentId).orElse(null);
         assignments.setStatus("Confirmed");
         deviceAssignmentRepository.save(assignments);
-        //deviceAssignmentRepository.delete(assignments);
+        deviceAssignmentRepository.delete(assignments);
     }
 
     @Override
@@ -90,7 +108,15 @@ public class DeviceAssignmentImp implements DeviceAssignmentDao{
 
     @Override
     public List<DeviceAssignmentDTO> findAll(String searchText) {
-        return List.of();
+        if (searchText == null || searchText.trim().isEmpty()) {
+            return deviceAssignmentRepository.findAll().stream()
+                    .map(this::deviceAssignmentDTO)
+                    .collect(Collectors.toList());
+        }
+
+        return deviceAssignmentRepository.searchByName(searchText).stream()
+                .map(this::deviceAssignmentDTO)
+                .collect(Collectors.toList());
     }
 
     @Override

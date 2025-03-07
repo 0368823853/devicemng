@@ -109,16 +109,14 @@ public class UserServiceImp implements UserService {
         if (userDTO.getEmail() == null || userDTO.getEmail().trim().isEmpty()) {
             throw new IllegalArgumentException("Email không được để trống!");
         }
-        if (userDao.existsByUsername(userDTO.getUsername())) {
-            throw new RuntimeException("Username đã tồn tại!");
-        }
-        if (userDao.existsByEmail(userDTO.getEmail())) {
-            throw new RuntimeException("Email đã tồn tại!");
+        if (!userDTO.getRole().equals(UserRole.ADMIN)  && !userDTO.getRole().equals(UserRole.USER)) {
+            throw new RuntimeException("Role không hợp lệ");
         }
         UserDTO user = userDao.findById(id).orElseThrow(()->new RuntimeException("User Not Found"));
         if (user == null) {
             throw new NotFoundException("User not found with ID: " + id);
         }
+
         userDao.updateUser(id, userDTO);
     }
 
@@ -182,5 +180,11 @@ public class UserServiceImp implements UserService {
             throw new RuntimeException("Mat khau cu khong dung");
         }
         userDao.updatePassword(username, updatePasswordDTO);
+    }
+
+    @Override
+    public UUID getUserIdByUsername(String username) {
+        userDao.findByUsername(username);
+        return null;
     }
 }

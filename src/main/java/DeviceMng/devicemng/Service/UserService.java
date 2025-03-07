@@ -20,4 +20,6 @@ public interface UserService extends BaseService<UserDTO, UUID> {
     void deleteUser(UUID id);
     Users updateUserRole(UUID id, String role);
     void updatePassword(String username, UpdatePasswordDTO updatePasswordDTO);
+
+    UUID getUserIdByUsername(String username);
 }

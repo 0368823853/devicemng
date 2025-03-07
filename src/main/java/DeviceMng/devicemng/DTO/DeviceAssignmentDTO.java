@@ -5,18 +5,32 @@ import java.util.UUID;
 
 // sua ten returnAt
 public class DeviceAssignmentDTO {
+    private UUID id;
     private UUID iduser;
     private UUID iddevice;
+    private String deviceName;
+    private String deviceStatus;
     private LocalDateTime createdAt;  // Thời gian mượn
     private LocalDateTime confirmAt;
     private String status;
 
-    public DeviceAssignmentDTO(UUID iduser, UUID iddevice, LocalDateTime createdAt, LocalDateTime confirmAt, String status) {
+    public DeviceAssignmentDTO(UUID id, UUID iduser, UUID iddevice, String deviceName, String deviceStatus, LocalDateTime createdAt, LocalDateTime confirmAt, String status) {
+        this.id = id;
         this.iduser = iduser;
         this.iddevice = iddevice;
+        this.deviceName = deviceName;
+        this.deviceStatus = deviceStatus;
         this.createdAt = createdAt;
         this.confirmAt = confirmAt;
         this.status = status;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public UUID getIduser() {
@@ -33,6 +47,22 @@ public class DeviceAssignmentDTO {
 
     public void setIddevice(UUID iddevice) {
         this.iddevice = iddevice;
+    }
+
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
+    }
+
+    public String getDeviceStatus() {
+        return deviceStatus;
+    }
+
+    public void setDeviceStatus(String deviceStatus) {
+        this.deviceStatus = deviceStatus;
     }
 
     public LocalDateTime getCreatedAt() {

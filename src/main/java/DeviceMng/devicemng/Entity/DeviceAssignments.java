@@ -31,16 +31,24 @@ public class DeviceAssignments {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "device_name")
+    private String deviceName;
+
+    @Column(name = "device_status")
+    private String deviceStatus;
+
     public DeviceAssignments() {
     }
 
-    public DeviceAssignments(UUID id, UUID userId, UUID deviceId, LocalDateTime createdAt, LocalDateTime confirmAt, String status) {
+    public DeviceAssignments(UUID id, UUID userId, UUID deviceId, LocalDateTime createdAt, LocalDateTime confirmAt, String status, String deviceName, String deviceStatus) {
         this.id = id;
         this.userId = userId;
         this.deviceId = deviceId;
         this.createdAt = createdAt;
         this.confirmAt = confirmAt;
         this.status = status;
+        this.deviceName = deviceName;
+        this.deviceStatus = deviceStatus;
     }
 
     public UUID getId() {
@@ -89,5 +97,21 @@ public class DeviceAssignments {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
+    }
+
+    public String getDeviceStatus() {
+        return deviceStatus;
+    }
+
+    public void setDeviceStatus(String deviceStatus) {
+        this.deviceStatus = deviceStatus;
     }
 }

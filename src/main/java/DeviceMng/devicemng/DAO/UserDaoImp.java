@@ -26,6 +26,7 @@ public class UserDaoImp implements UserDao {
 
     private UserDTO convertUserToDTO(Users user) {
         return new UserDTO(
+                user.getId(),
                 user.getUsername(),
                 user.getFullname(),
                 user.getEmail(),
@@ -98,6 +99,7 @@ public class UserDaoImp implements UserDao {
         user.setUsername(userDTO.getUsername());
         user.setFullname(userDTO.getFullname());
         user.setEmail(userDTO.getEmail());
+        user.setRole(userDTO.getRole());
         userRepository.save(user);
     }
 

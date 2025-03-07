@@ -1,5 +1,6 @@
 package DeviceMng.devicemng.Controller;
 
+import DeviceMng.devicemng.DTO.DeviceDTO;
 import DeviceMng.devicemng.DTO.UpdatePasswordDTO;
 import DeviceMng.devicemng.DTO.UserDTO;
 import DeviceMng.devicemng.DTO.UserRegisterDTO;
@@ -13,7 +14,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -46,9 +49,11 @@ public class UserController {
     // VietNTb: Chuyen cac validate sang service
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/user/delete/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable UUID id, @AuthenticationPrincipal UserDetails currentUser) {
+    public ResponseEntity<Map<String, String>> deleteUser(@PathVariable UUID id, @AuthenticationPrincipal UserDetails currentUser) {
         userService.deleteUser(id);
-        return ResponseEntity.ok("User deleted!");
+        Map<String, String> response = new HashMap<>();
+        response.put("status", "Delete User Success");
+        return ResponseEntity.ok(response);
     }
 
     // VietNTb: Chuyen cac validate sang service, chuyen het validate sang 1 cho
@@ -62,17 +67,21 @@ public class UserController {
     // VietNTb: Chuyen cac validate sang service, chuyen het validate sang 1 cho
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/user/{id}")
-    public ResponseEntity<String> updateUser(@PathVariable UUID id, @RequestBody UserDTO userDTO) {
+    public ResponseEntity<Map<String, String>> updateUser(@PathVariable UUID id, @RequestBody UserDTO userDTO) {
         userService.updateUser(id, userDTO);
-        return ResponseEntity.ok("Cap nhat nguoi dung thanh cong");
+        Map<String, String> response = new HashMap<>();
+        response.put("status", "Update User Success");
+        return ResponseEntity.ok(response);
     }
 
     // TODO: ca admin cung update password duoc
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @PutMapping("/user/updatePassword")
-    public ResponseEntity<String> updatePassword(@RequestBody UpdatePasswordDTO updatePasswordDTO, @AuthenticationPrincipal UserDetails user) {
+    public ResponseEntity<Map<String, String>> updatePassword(@RequestBody UpdatePasswordDTO updatePasswordDTO, @AuthenticationPrincipal UserDetails user) {
         userService.updatePassword(user.getUsername(), updatePasswordDTO);
-        return ResponseEntity.ok("Cap nhat mat khau thanh cong");
+        Map<String, String> response = new HashMap<>();
+        response.put("status", "Update Password Success");
+        return ResponseEntity.ok(response);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

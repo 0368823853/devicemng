@@ -52,9 +52,8 @@ public class DeviceAssignmentServiceImp implements DeviceAssignmentService {
 
     // TODO: them validate check user
     @Override
-    public List<DeviceAssignmentDTO> getUserDevices(UUID userId) {
-        deviceAssignmentDao.findById(userId).orElseThrow(() -> new EntityNotFoundException("Device assignment not found"));
-        return deviceAssignmentDao.getUserDevices(userId);
+    public List<DeviceAssignmentDTO> getUserDevices(String username) {
+        return deviceAssignmentDao.getUserDevices(username);
     }
 
     @Override
@@ -78,7 +77,7 @@ public class DeviceAssignmentServiceImp implements DeviceAssignmentService {
 
     @Override
     public List<DeviceAssignmentDTO> getAll(String searchText) {
-        return List.of();
+        return deviceAssignmentDao.findAll(searchText);
     }
 
     @Override

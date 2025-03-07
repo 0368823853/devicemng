@@ -1,15 +1,18 @@
 package DeviceMng.devicemng.DTO;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class UserDTO {
+    private UUID id;
     private String username;
     private String fullname;
     private String email;
     private String role;
     private LocalDateTime createdAt;
 
-    public UserDTO(String username, String fullname, String email, String role, LocalDateTime createdAt) {
+    public UserDTO(UUID id, String username, String fullname, String email, String role, LocalDateTime createdAt) {
+        this.id = id;
         this.username = username;
         this.fullname = fullname;
         this.email = email;
@@ -18,6 +21,14 @@ public class UserDTO {
     }
 
     public UserDTO() {
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getUsername() {
