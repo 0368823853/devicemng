@@ -33,7 +33,7 @@ public class LoginTokenService {
                 .add(data)           // them cac thong tin payload
                 .subject(username)    // chi dinh danh tinh cua token
                 .issuedAt(new Date(System.currentTimeMillis()))// thiet lap thoi diem tao token
-                .expiration(new Date(System.currentTimeMillis()+60*60*30))//thoi diem het han cua token
+                .expiration(new Date(System.currentTimeMillis()+10 * 60 * 1000))//thoi diem het han cua token
                 .and()               // ket thuc payload va chuyen sang buoc ky token
                 .signWith(getKey())   // ky token banwg thuat toan ma hoa
                 .compact();     //ket thuc xay dung token va tra ve token duoi dang chuoi

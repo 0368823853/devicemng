@@ -9,6 +9,7 @@ import DeviceMng.devicemng.DTO.UserDTO;
 import DeviceMng.devicemng.Entity.DeviceAssignments;
 import DeviceMng.devicemng.Exception.NotFoundException;
 import jakarta.persistence.EntityNotFoundException;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,10 +33,10 @@ public class DeviceAssignmentServiceImp implements DeviceAssignmentService {
     public void assignDeviceToUser(UUID deviceId, UUID userId) {
 
         Optional<DeviceAssignments> existingAssignment = deviceAssignmentDao
-                .findByDeviceIdAndUserId(deviceId, userId);
+                .findByDeviceId(deviceId);
 
         if (existingAssignment.isPresent()) {
-            throw new IllegalStateException("User đã mượn thiết bị này, không thể mượn lại!");
+            throw new IllegalStateException("User đã mượn thiết bị này, không thể gan them!");
         }
 
         DeviceDTO deviceDTO = deviceDao.findById(deviceId).orElseThrow(() -> new EntityNotFoundException("Device not found" + deviceId));
@@ -71,9 +72,13 @@ public class DeviceAssignmentServiceImp implements DeviceAssignmentService {
     // TODO: check validate assignmentId
     @Override
     public void confirmDeviceReturn(UUID assignmentId) {
-        deviceAssignmentDao.findById(assignmentId).orElseThrow(()->new NotFoundException("Assignment Not Found with id: "+assignmentId));
+        DeviceAssignmentDTO existingAssignment = deviceAssignmentDao.findById(assignmentId).orElseThrow(()->new NotFoundException("Assignment Not Found with id: "+assignmentId));
+        if (!"Borrowed".equals(existingAssignment.getStatus())) {
+            throw new NotFoundException("Assignment Not Found with id: "+assignmentId);
+        }
         deviceAssignmentDao.confirmDeviceReturn(assignmentId);
     }
+
 
     @Override
     public List<DeviceAssignmentDTO> getAll(String searchText) {

@@ -1,6 +1,5 @@
 package DeviceMng.devicemng.Repository;
 
-import DeviceMng.devicemng.Entity.Device;
 import DeviceMng.devicemng.Entity.DeviceAssignments;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,7 +14,7 @@ import java.util.UUID;
 public interface DeviceAssignmentRepository extends JpaRepository<DeviceAssignments, UUID> {
     List<DeviceAssignments> findByUserId(UUID userId);
     Optional<DeviceAssignments> findByIdAndConfirmAtIsNull(UUID id);
-    Optional<DeviceAssignments> findByDeviceIdAndUserId(UUID deviceId, UUID userId);
+    Optional<DeviceAssignments> findByDeviceId(UUID deviceId);
     List<DeviceAssignments> findByUserIdAndConfirmAtIsNull(UUID userId);
 
     @Query("SELECT u FROM DeviceAssignments u WHERE LOWER(u.deviceName) LIKE LOWER(CONCAT('%', :searchText, '%')) " )

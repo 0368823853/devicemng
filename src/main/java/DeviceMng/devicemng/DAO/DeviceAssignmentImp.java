@@ -36,6 +36,7 @@ public class DeviceAssignmentImp implements DeviceAssignmentDao{
                 device.getDeviceId(),
                 device.getDeviceName(),
                 device.getDeviceStatus(),
+                device.getUserName(),
                 device.getCreatedAt(),
                 device.getConfirmAt(),
                 device.getStatus()
@@ -51,12 +52,14 @@ public class DeviceAssignmentImp implements DeviceAssignmentDao{
     @Override
     public void assignDeviceToUser(UUID deviceId, UUID userId) {
         Device device = deviceRepository.findById(deviceId).orElse(null);
+        Users user = userRepository.findById(userId).orElse(null);
 
         DeviceAssignments deviceAssignments = new DeviceAssignments();
         deviceAssignments.setDeviceId(deviceId);
         deviceAssignments.setUserId(userId);
         deviceAssignments.setDeviceName(device.getName());
         deviceAssignments.setDeviceStatus(device.getStatus());
+        deviceAssignments.setUserName(user.getUsername());
         deviceAssignments.setCreatedAt(LocalDateTime.now());
         deviceAssignments.setStatus("Borrowed");
         deviceAssignmentRepository.save(deviceAssignments);
@@ -97,9 +100,14 @@ public class DeviceAssignmentImp implements DeviceAssignmentDao{
     }
 
     @Override
-    public Optional<DeviceAssignments> findByDeviceIdAndUserId(UUID deviceId, UUID userId) {
-        return deviceAssignmentRepository.findByDeviceIdAndUserId(deviceId, userId);
+    public Optional<DeviceAssignments> findByDeviceId(UUID deviceId) {
+        return deviceAssignmentRepository.findByDeviceId(deviceId);
     }
+
+//    @Override
+//    public Optional<DeviceAssignments> findByDeviceIdAndUserId(UUID deviceId, UUID userId) {
+//        return deviceAssignmentRepository.findByDeviceIdAndUserId(deviceId, userId);
+//    }
 
     @Override
     public Optional<DeviceAssignmentDTO> findById(UUID id) {

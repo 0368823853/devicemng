@@ -10,16 +10,18 @@ public class DeviceAssignmentDTO {
     private UUID iddevice;
     private String deviceName;
     private String deviceStatus;
+    private String userName;
     private LocalDateTime createdAt;  // Thời gian mượn
     private LocalDateTime confirmAt;
     private String status;
 
-    public DeviceAssignmentDTO(UUID id, UUID iduser, UUID iddevice, String deviceName, String deviceStatus, LocalDateTime createdAt, LocalDateTime confirmAt, String status) {
+    public DeviceAssignmentDTO(UUID id, UUID iduser, UUID iddevice, String deviceName, String deviceStatus, String userName, LocalDateTime createdAt, LocalDateTime confirmAt, String status) {
         this.id = id;
         this.iduser = iduser;
         this.iddevice = iddevice;
         this.deviceName = deviceName;
         this.deviceStatus = deviceStatus;
+        this.userName = userName;
         this.createdAt = createdAt;
         this.confirmAt = confirmAt;
         this.status = status;
@@ -63,6 +65,14 @@ public class DeviceAssignmentDTO {
 
     public void setDeviceStatus(String deviceStatus) {
         this.deviceStatus = deviceStatus;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public LocalDateTime getCreatedAt() {

@@ -17,5 +17,8 @@ public interface DeviceAssignmentDao extends Dao<DeviceAssignmentDTO, UUID> {
     void confirmDeviceReturn(UUID assignmentId);
 
     // TODO: Chi check theo userId va deviceId
-    Optional<DeviceAssignments> findByDeviceIdAndUserId(UUID deviceId, UUID userId);
+//    Optional<DeviceAssignments> findByDeviceIdAndUserId(UUID deviceId, UUID userId);
+//    Optional<DeviceAssignments> findByDeviceIdAndUserId(UUID deviceId, UUID userId);
+
+    Optional<DeviceAssignments> findByDeviceId(UUID deviceId);
 }
