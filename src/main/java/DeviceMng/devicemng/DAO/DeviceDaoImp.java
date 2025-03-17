@@ -24,6 +24,7 @@ public class DeviceDaoImp implements DeviceDao {
                 device.getName(),
                 device.getDescription(),
                 device.getStatus(),
+                device.getDeviceStatus(),
                 device.getCreatedAt()
         );
     }

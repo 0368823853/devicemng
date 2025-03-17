@@ -26,17 +26,21 @@ public class Device {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "devicestatus")
+    private String deviceStatus;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
 
     public Device() {
     }
 
-    public Device(UUID id, String name, String description, String status, LocalDateTime createdAt) {
+    public Device(UUID id, String name, String description, String status, String deviceStatus, LocalDateTime createdAt) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.status = status;
+        this.deviceStatus = deviceStatus;
         this.createdAt = createdAt;
     }
 
@@ -70,6 +74,14 @@ public class Device {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getDeviceStatus() {
+        return deviceStatus;
+    }
+
+    public void setDeviceStatus(String deviceStatus) {
+        this.deviceStatus = deviceStatus;
     }
 
     public LocalDateTime getCreatedAt() {

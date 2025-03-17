@@ -47,6 +47,7 @@ public class DeviceAssignmentServiceImp implements DeviceAssignmentService {
         if (userDTO == null) {
             throw new NotFoundException("User assignment not found");
         }
+
         deviceAssignmentDao.assignDeviceToUser(deviceId, userId);
     }
 
@@ -72,10 +73,7 @@ public class DeviceAssignmentServiceImp implements DeviceAssignmentService {
     // TODO: check validate assignmentId
     @Override
     public void confirmDeviceReturn(UUID assignmentId) {
-        DeviceAssignmentDTO existingAssignment = deviceAssignmentDao.findById(assignmentId).orElseThrow(()->new NotFoundException("Assignment Not Found with id: "+assignmentId));
-        if (!"Borrowed".equals(existingAssignment.getStatus())) {
-            throw new NotFoundException("Assignment Not Found with id: "+assignmentId);
-        }
+        deviceAssignmentDao.findById(assignmentId).orElseThrow(()->new NotFoundException("Assignment Not Found with id: "+assignmentId));
         deviceAssignmentDao.confirmDeviceReturn(assignmentId);
     }
 

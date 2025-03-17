@@ -9,13 +9,15 @@ public class DeviceDTO {
     private String name;
     private String description;
     private String status;
+    private String deviceStatus;
     private LocalDateTime createdAt;
 
-    public DeviceDTO(UUID id, String name, String description, String status, LocalDateTime createdAt) {
+    public DeviceDTO(UUID id, String name, String description, String status, String deviceStatus, LocalDateTime createdAt) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.status = status;
+        this.deviceStatus = deviceStatus;
         this.createdAt = createdAt;
     }
 
@@ -49,6 +51,14 @@ public class DeviceDTO {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getDeviceStatus() {
+        return deviceStatus;
+    }
+
+    public void setDeviceStatus(String deviceStatus) {
+        this.deviceStatus = deviceStatus;
     }
 
     public LocalDateTime getCreatedAt() {

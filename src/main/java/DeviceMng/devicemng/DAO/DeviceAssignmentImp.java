@@ -54,6 +54,9 @@ public class DeviceAssignmentImp implements DeviceAssignmentDao{
         Device device = deviceRepository.findById(deviceId).orElse(null);
         Users user = userRepository.findById(userId).orElse(null);
 
+        device.setDeviceStatus("Borrowed");
+        deviceRepository.save(device);
+
         DeviceAssignments deviceAssignments = new DeviceAssignments();
         deviceAssignments.setDeviceId(deviceId);
         deviceAssignments.setUserId(userId);
@@ -88,6 +91,10 @@ public class DeviceAssignmentImp implements DeviceAssignmentDao{
         assignments.setConfirmAt(LocalDateTime.now());
         assignments.setStatus("Returned");
         deviceAssignmentRepository.save(assignments);
+        Device device = deviceRepository.findById(assignments.getDeviceId()).orElse(null);
+        device.setDeviceStatus("Returned");
+        deviceRepository.save(device);
+
     }
 
     //VietNTb: CHuyeen het validate snag service, xac nhan xong se xoa devicassignment
@@ -96,7 +103,13 @@ public class DeviceAssignmentImp implements DeviceAssignmentDao{
         DeviceAssignments assignments = deviceAssignmentRepository.findById(assignmentId).orElse(null);
         assignments.setStatus("Confirmed");
         deviceAssignmentRepository.save(assignments);
+
+
+        Device device = deviceRepository.findById(assignments.getDeviceId()).orElse(null);
+        device.setDeviceStatus("Confirmed");
+        deviceRepository.save(device);
         deviceAssignmentRepository.delete(assignments);
+
     }
 
     @Override
