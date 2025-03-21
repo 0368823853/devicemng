@@ -138,8 +138,10 @@ public class UserServiceImp implements UserService {
             // Lấy role của user từ Authentication
             String role = authentication.getAuthorities().iterator().next().getAuthority();
 
+            Users usersFormDB = userDao.findByUsername(users.getUsername());
+
             // truyền role vào token
-            return loginTokenService.createLoginToken(users.getUsername(), role);
+            return loginTokenService.createLoginToken(usersFormDB.getUsername(), role, usersFormDB.getId());
         }
 
         return "False";

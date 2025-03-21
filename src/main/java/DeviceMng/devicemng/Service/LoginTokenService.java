@@ -10,10 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.security.Key;
-import java.util.Base64;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 @Service
@@ -25,9 +22,10 @@ public class LoginTokenService {
             this.secretKey = Base64.getEncoder().encodeToString(key.getEncoded());
     }
 
-    public String createLoginToken(String username, String role) {
+    public String createLoginToken(String username, String role, UUID userId) {
         Map<String, Object> data = new HashMap<>();
         data.put("role", role);
+        data.put("id", userId);
         return Jwts.builder()      // khoi tao jwt
                 .claims()           // tao payload cho token
                 .add(data)           // them cac thong tin payload

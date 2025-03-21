@@ -33,10 +33,13 @@ public class Users {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    @Column(name = "base_salary")
+    private Double baseSalary;
+
     public Users() {
     }
 
-    public Users(UUID id, String username, String password, String role, String fullname, String email, LocalDateTime createdAt) {
+    public Users(UUID id, String username, String password, String role, String fullname, String email, LocalDateTime createdAt, Double baseSalary) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -44,6 +47,7 @@ public class Users {
         this.fullname = fullname;
         this.email = email;
         this.createdAt = createdAt;
+        this.baseSalary = baseSalary;
     }
 
     public UUID getId() {
@@ -100,5 +104,13 @@ public class Users {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Double getBaseSalary() {
+        return baseSalary;
+    }
+
+    public void setBaseSalary(Double baseSalary) {
+        this.baseSalary = baseSalary;
     }
 }
