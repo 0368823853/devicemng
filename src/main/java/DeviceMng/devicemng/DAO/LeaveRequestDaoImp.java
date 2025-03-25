@@ -8,9 +8,7 @@ import DeviceMng.devicemng.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Component
 public class LeaveRequestDaoImp implements LeaveRequestDao {
@@ -80,5 +78,15 @@ public class LeaveRequestDaoImp implements LeaveRequestDao {
     @Override
     public boolean existsById(UUID leaveRequestId) {
         return leaveRepository.existsById(leaveRequestId);
+    }
+
+    @Override
+    public Map<String, Long> getLeaveStatistics() {
+        Map<String, Long> stats = new HashMap<>();
+        stats.put("totalLeave", leaveRepository.countTotalLeave());
+        stats.put("Pending", leaveRepository.countPendingLeave());
+        stats.put("Approved", leaveRepository.countApprovedLeave());
+        stats.put("Rejected", leaveRepository.countRejectedLeave());
+        return stats;
     }
 }

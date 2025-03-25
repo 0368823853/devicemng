@@ -7,6 +7,7 @@ import DeviceMng.devicemng.Entity.Users;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -22,4 +23,8 @@ public interface UserService extends BaseService<UserDTO, UUID> {
     void updatePassword(String username, UpdatePasswordDTO updatePasswordDTO);
 
     UUID getUserIdByUsername(String username);
+
+    Map<String, Long> getUserStatistics();
+
+    //EmployeeReportDTO getEmployeeReport();
 }

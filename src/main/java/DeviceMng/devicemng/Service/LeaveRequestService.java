@@ -6,6 +6,7 @@ import DeviceMng.devicemng.Entity.LeaveRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -16,4 +17,6 @@ public interface LeaveRequestService extends BaseService<LeaveRequest, UUID> {
     void deleteLeaveRequest(UUID leaveRequestId, UUID userId);
     List<LeaveRequest> getAllLeaveRequests();
     void deleteLeaveRequestByAdmin(UUID leaveRequestId);
+
+    Map<String, Long> getLeaveStatistics();
 }

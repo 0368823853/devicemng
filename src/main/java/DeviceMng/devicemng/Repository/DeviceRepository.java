@@ -21,4 +21,13 @@ public interface DeviceRepository extends JpaRepository<Device, UUID> {
     //dùng LOWER(...) → Để tìm kiếm không phân biệt chữ hoa/thường.
     @Query("SELECT u FROM Device u WHERE LOWER(u.name) LIKE LOWER(CONCAT('%', :searchText, '%')) " )
     List<Device> searchByName(@Param("searchText") String searchText);
+
+    @Query("SELECT COUNT(d) FROM Device d")
+    long countTotalDevices();
+
+    @Query("SELECT COUNT(d) FROM Device d WHERE d.status = 'Active'")
+    long countActiveDevices();
+
+    @Query("SELECT COUNT(d) FROM Device d WHERE d.status = 'Inactive'")
+    long countInactiveDevices();
 }

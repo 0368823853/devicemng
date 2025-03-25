@@ -1,10 +1,7 @@
 package DeviceMng.devicemng.Service;
 
 import DeviceMng.devicemng.DAO.UserDao;
-import DeviceMng.devicemng.DTO.UpdatePasswordDTO;
-import DeviceMng.devicemng.DTO.UserDTO;
-import DeviceMng.devicemng.DTO.UserRegisterDTO;
-import DeviceMng.devicemng.DTO.UserRole;
+import DeviceMng.devicemng.DTO.*;
 import DeviceMng.devicemng.Entity.Users;
 import DeviceMng.devicemng.Exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Component
@@ -189,4 +187,19 @@ public class UserServiceImp implements UserService {
         userDao.findByUsername(username);
         return null;
     }
+
+    @Override
+    public Map<String, Long> getUserStatistics() {
+        return userDao.getUserStatistics();
+    }
+
+//    @Override
+//    public EmployeeReportDTO getEmployeeReport() {
+//        long totalEmployees = userDao.count();
+//        long totalAdmins = userDao.countByRole("ADMIN");
+//        long newEmployees = userDao.countNewEmployeesThisMonth();
+//        long employeesLeft = userDao.countEmployeesLeftThisMonth();
+//
+//        return new EmployeeReportDTO(totalEmployees, totalAdmins, newEmployees, employeesLeft);
+//    }
 }

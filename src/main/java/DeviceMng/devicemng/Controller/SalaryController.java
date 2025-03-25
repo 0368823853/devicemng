@@ -55,4 +55,9 @@ public class SalaryController {
         return ResponseEntity.ok(salaryDTOS);
     }
 
+    @GetMapping("/repostSalary")
+    public ResponseEntity<SalaryDTO> getSalaryStatistics() {
+        return ResponseEntity.ok(salaryService.getSalaryStatistics());
+    }
+
 }

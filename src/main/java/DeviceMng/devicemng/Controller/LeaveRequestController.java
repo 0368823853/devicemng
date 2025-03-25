@@ -66,4 +66,10 @@ public class LeaveRequestController {
         response.put("message", "Leave request deleted");
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/repostLeave")
+    public ResponseEntity<Map<String, Long>> getLeaveStatistics() {
+        return ResponseEntity.ok(leaveRequestService.getLeaveStatistics());
+    }
+
 }

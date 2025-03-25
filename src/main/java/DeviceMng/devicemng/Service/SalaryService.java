@@ -17,4 +17,6 @@ public interface SalaryService extends BaseService<Salary, UUID> {
 
     List<SalaryDTO> getSalaryByUserId(UUID userId);
     List<SalaryDTO> getAllSalary(String searchText);
+
+    SalaryDTO getSalaryStatistics();
 }

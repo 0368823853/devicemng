@@ -15,4 +15,13 @@ public interface SalaryRepository extends JpaRepository<Salary, UUID> {
 
     @Query("SELECT u FROM Salary u WHERE LOWER(u.userName) LIKE LOWER(CONCAT('%', :searchText, '%')) " )
     List<Salary> searchByName(String searchText);
+
+    @Query("SELECT SUM(s.totalSalary) FROM Salary s")
+    Double getTotalSalary();
+
+    @Query("SELECT SUM(s.totalHours) FROM Salary s")
+    Double getTotalHoursWorked();
+
+//    @Query("SELECT s.salaryMonth, SUM(s.totalSalary) FROM Salary s GROUP BY s.salaryMonth")
+//    List<Object[]> getSalaryByMonth();
 }

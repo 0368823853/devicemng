@@ -38,6 +38,11 @@ public class SalaryServiceImp implements SalaryService {
     }
 
     @Override
+    public SalaryDTO getSalaryStatistics() {
+        return salaryDao.getSalaryStatistics();
+    }
+
+    @Override
     public List<Salary> getAll(String searchText) {
         return null;
     }

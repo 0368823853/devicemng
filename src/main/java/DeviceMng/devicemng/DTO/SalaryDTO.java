@@ -27,6 +27,10 @@ public class SalaryDTO {
         this.userName = userName;
     }
 
+    public SalaryDTO() {
+
+    }
+
     public UUID getUserId() {
         return userId;
     }

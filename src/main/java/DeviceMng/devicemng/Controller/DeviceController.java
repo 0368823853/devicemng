@@ -63,4 +63,9 @@ public class DeviceController {
         return ResponseEntity.ok(deviceService.filterByStatus(status));
     }
 
+    @GetMapping("/statistics")
+    public ResponseEntity<Map<String, Long>> getDeviceStatistics() {
+        return ResponseEntity.ok(deviceService.getDeviceStatistics());
+    }
+
 }

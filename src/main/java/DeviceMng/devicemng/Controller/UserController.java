@@ -90,4 +90,9 @@ public class UserController {
         List<UserDTO> users = userService.filterByRole(role);
         return ResponseEntity.ok(users);
     }
+
+    @GetMapping("/repost")
+    public ResponseEntity<Map<String, Long>> getUserStatistics() {
+        return ResponseEntity.ok(userService.getUserStatistics());
+    }
 }

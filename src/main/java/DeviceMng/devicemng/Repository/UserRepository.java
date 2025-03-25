@@ -27,4 +27,12 @@ public interface UserRepository extends JpaRepository<Users, UUID> {
             "OR LOWER(u.username) LIKE LOWER(CONCAT('%', :searchText, '%'))")
     List<Users> searchByFullnameOrEmail(@Param("searchText") String searchText);
 
+    @Query("SELECT COUNT(d) FROM Users d")
+    long countTotalUsers();
+
+    @Query("SELECT COUNT(d) FROM Users d WHERE d.role = 'ADMIN'")
+    long countAdminUsers();
+
+    @Query("SELECT COUNT(d) FROM Users d WHERE d.role = 'USER'")
+    long countUserUsers();
 }

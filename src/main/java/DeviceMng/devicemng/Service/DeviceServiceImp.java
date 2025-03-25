@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Component
@@ -78,6 +79,11 @@ public class DeviceServiceImp implements DeviceService{
             throw new NotFoundException("Device not found with ID: " + id);
         }
         deviceDao.updateDevice(id, deviceDTO);
+    }
+
+    @Override
+    public Map<String, Long> getDeviceStatistics() {
+        return deviceDao.getDeviceStatistics();
     }
 
 

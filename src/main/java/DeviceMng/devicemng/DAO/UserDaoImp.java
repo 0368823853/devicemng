@@ -10,9 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -135,5 +133,34 @@ public class UserDaoImp implements UserDao {
         user.setPassword(bCryptPasswordEncoder.encode(updatePasswordDTO.getNewPassword()));
         userRepository.save(user);
     }
+
+    @Override
+    public Map<String, Long> getUserStatistics() {
+        Map<String, Long> stats = new HashMap<>();
+        stats.put("totalUsers", userRepository.countTotalUsers());
+        stats.put("Admin", userRepository.countAdminUsers());
+        stats.put("Users", userRepository.countUserUsers());
+        return stats;
+    }
+
+//    @Override
+//    public long count() {
+//        return userRepository.count();
+//    }
+//
+//    @Override
+//    public long countByRole(String admin) {
+//        return userRepository.countByRole("ADMIN");
+//    }
+//
+//    @Override
+//    public long countNewEmployeesThisMonth() {
+//        return userRepository.countNewEmployeesThisMonth();
+//    }
+//
+//    @Override
+//    public long countEmployeesLeftThisMonth() {
+//        return userRepository.countEmployeesLeftThisMonth();
+//    }
 
 }

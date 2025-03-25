@@ -15,4 +15,6 @@ public interface SalaryDao extends Dao<Salary, UUID> {
 
     List<SalaryDTO> getSalaryByUserId(UUID userId);
     List<SalaryDTO> getAll(String searchText);
+
+    SalaryDTO getSalaryStatistics();
 }

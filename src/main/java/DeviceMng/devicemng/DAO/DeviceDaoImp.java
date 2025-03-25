@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -65,6 +63,15 @@ public class DeviceDaoImp implements DeviceDao {
         device.setDescription(deviceDTO.getDescription());
         device.setStatus(deviceDTO.getStatus());
         deviceRepository.save(device);
+    }
+
+    @Override
+    public Map<String, Long> getDeviceStatistics() {
+        Map<String, Long> stats = new HashMap<>();
+        stats.put("totalDevices", deviceRepository.countTotalDevices());
+        stats.put("activeDevices", deviceRepository.countActiveDevices());
+        stats.put("inactiveDevices", deviceRepository.countInactiveDevices());
+        return stats;
     }
 
     @Override

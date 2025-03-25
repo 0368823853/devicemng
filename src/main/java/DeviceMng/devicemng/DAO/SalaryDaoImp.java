@@ -13,9 +13,7 @@ import org.springframework.stereotype.Component;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -125,6 +123,38 @@ public class SalaryDaoImp implements SalaryDao {
         return salaryRepository.searchByName(searchText).stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
+    }
+
+//    SalaryStatisticsDTO stats = new SalaryStatisticsDTO();
+//        stats.setTotalSalary(salaryRepository.getTotalSalary());
+//        stats.setAverageSalary(salaryRepository.getAverageSalary());
+//        stats.setMaxSalary(salaryRepository.getMaxSalary());
+//        stats.setMinSalary(salaryRepository.getMinSalary());
+//        stats.setTotalHoursWorked(salaryRepository.getTotalHoursWorked());
+//        stats.setTotalOvertimeHours(salaryRepository.getTotalOvertimeHours());
+//        stats.setAverageOvertimePay(salaryRepository.getAverageOvertimePay());
+//
+//    // Lương theo tháng
+//    Map<String, Double> salaryByMonth = new HashMap<>();
+//        for (Object[] obj : salaryRepository.getSalaryByMonth()) {
+//        salaryByMonth.put(obj[0].toString(), (Double) obj[1]);
+//    }
+//        stats.setSalaryByMonth(salaryByMonth);
+//
+//        return stats;
+    @Override
+    public SalaryDTO getSalaryStatistics() {
+        SalaryDTO stats = new SalaryDTO();
+        stats.setTotalSalary(salaryRepository.getTotalSalary());
+        stats.setTotalHours(salaryRepository.getTotalHoursWorked());
+//            Map<String, Double> salaryByMonth = new HashMap<>();
+//        for (Object[] obj : salaryRepository.getSalaryByMonth()) {
+//        salaryByMonth.put(obj[0].toString(), (Double) obj[1]);
+//    }
+//        Salary salary = new Salary();
+//        salary.setSalaryMonth(LocalDate.of(stats.getYear(), stats.getMonth(), stats.getDay()));
+
+        return stats;
     }
 
     @Override

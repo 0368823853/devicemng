@@ -14,4 +14,16 @@ public interface LeaveRepository extends JpaRepository<LeaveRequest, UUID> {
 
     @Query("SELECT u FROM LeaveRequest u WHERE LOWER(u.userName) LIKE LOWER(CONCAT('%', :searchText, '%')) " )
     List<LeaveRequest> searchByName(String searchText);
+
+    @Query("SELECT COUNT(d) FROM LeaveRequest d")
+    Long countTotalLeave();
+
+    @Query("SELECT COUNT(d) FROM LeaveRequest d WHERE d.status = 'Pending'")
+    Long countPendingLeave();
+
+    @Query("SELECT COUNT(d) FROM LeaveRequest d WHERE d.status = 'Approved'")
+    Long countApprovedLeave();
+
+    @Query("SELECT COUNT(d) FROM LeaveRequest d WHERE d.status = 'Rejected'")
+    Long countRejectedLeave();
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Component
@@ -80,6 +81,11 @@ public class LeaveRequestServiceImp implements LeaveRequestService {
             throw new RuntimeException("Leave request not found");
         }
         leaveRequestDao.deleteById(leaveRequestId);
+    }
+
+    @Override
+    public Map<String, Long> getLeaveStatistics() {
+        return leaveRequestDao.getLeaveStatistics();
     }
 
     @Override

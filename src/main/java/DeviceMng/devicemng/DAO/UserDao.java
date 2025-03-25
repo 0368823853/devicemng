@@ -6,6 +6,7 @@ import DeviceMng.devicemng.DTO.UserRegisterDTO;
 import DeviceMng.devicemng.Entity.Users;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,4 +21,14 @@ public interface UserDao extends Dao<UserDTO, UUID> {
     boolean existsByEmail(String email);
     void updateUserRole(UUID id, String role);
     void updatePassword(String username, UpdatePasswordDTO updatePasswordDTO);
+
+    Map<String, Long> getUserStatistics();
+
+//    long count();
+//
+//    long countByRole(String admin);
+//
+//    long countNewEmployeesThisMonth();
+//
+//    long countEmployeesLeftThisMonth();
 }
